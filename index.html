@@ -584,8 +584,9 @@ body{margin:0;background:#f5f0e8}.hero{max-width:1160px;margin:auto;display:grid
 /*/s3*/
 </style><dialog id="image-view" aria-label="画像の拡大"><button type="button">閉じる</button><img alt=""></dialog><div id="copy-status" role="status" aria-live="polite"></div><script>
 const statusNode=document.getElementById('copy-status');
+let copyStatusTimer;
 async function copyPrompt(button,text){
- try {await navigator.clipboard.writeText(text); button.textContent='コピーしました';statusNode.textContent='指示文をコピーしました。';}
+ try {await navigator.clipboard.writeText(text); button.textContent='コピーしました';statusNode.textContent='指示文をコピーしました。';clearTimeout(copyStatusTimer);copyStatusTimer=setTimeout(()=>{statusNode.textContent='';},2200);}
  catch(error){statusNode.textContent='コピーできませんでした。指示文を開き、全文を選択してコピーしてください。';}
 }
 document.querySelectorAll('.fk-prompt-copy').forEach(button=>button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();copyPrompt(button,button.closest('details').querySelector('pre').textContent.trim());}));
